@@ -1,11 +1,19 @@
-import React from 'react';
+/** @jsxImportSource @emotion/react */
+
+import { css } from '@emotion/react';
 import { Header } from './Header';
-import './App.css';
 import { HomePage } from './HomePage';
+import { fontFamily, fontSize, gray2 } from './Styles';
 
 function App() {
   return (
-    <div className="App">
+    <div
+      css={css`
+        font-family: ${fontFamily};
+        font-size: ${fontSize};
+        color: ${gray2};
+      `}
+    >
       <Header />
       <HomePage />
     </div>
