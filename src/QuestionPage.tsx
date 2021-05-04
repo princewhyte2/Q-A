@@ -14,10 +14,12 @@ import {
   PrimaryButton,
   SubmissionSuccess,
 } from './Styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState, gettingQuestionAction, gotQuestionAction } from './Store';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import { Page } from './Page';
-import { QuestionData, getQuestion, postAnswer } from './QuestionsData';
+import { getQuestion, postAnswer } from './QuestionsData';
 import { useParams } from 'react-router-dom';
 
 type FormData = {
@@ -25,7 +27,9 @@ type FormData = {
 };
 
 export const QuestionPage = () => {
-  const [question, setQuestion] = React.useState<QuestionData | null>(null);
+  //const [question, setQuestion] = React.useState<QuestionData | null>(null);
+  const dispatch = useDispatch();
+  const question = useSelector((state: AppState) => state.questions.viewing);
   const [successfullySubmitted, setSuccessfullySubmitted] = React.useState(
     false,
   );
@@ -38,14 +42,16 @@ export const QuestionPage = () => {
 
   React.useEffect(() => {
     const doGetQuestion = async (questionId: number) => {
+      dispatch(gettingQuestionAction());
       const foundQuestion = await getQuestion(questionId);
-
-      setQuestion(foundQuestion);
+      dispatch(gotQuestionAction(foundQuestion));
+      //setQuestion(foundQuestion);
     };
 
     if (questionId) {
       doGetQuestion(Number(questionId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionId]);
 
   const submitForm = async (data: FormData) => {

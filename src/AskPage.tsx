@@ -12,7 +12,7 @@ import {
   SubmissionSuccess,
 } from './Styles';
 
-import { useForm, useFormState } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { postQuestion } from './QuestionsData';
 
 type FormData = {
