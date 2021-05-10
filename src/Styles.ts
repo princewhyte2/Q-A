@@ -147,3 +147,7 @@ export const SubmissionFailure = styled.div`
 
   color: red;
 `;
+
+export const StatusText = styled.div`
+  text-align: center;
+`;

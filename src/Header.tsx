@@ -6,7 +6,23 @@ import { useForm } from 'react-hook-form';
 import { fontFamily, fontSize, gray1, gray2, gray5 } from './Styles';
 import React from 'react';
 import { UserIcon } from './Icons';
+import { useAuth } from './Auth';
 
+const buttonStyle = css`
+  font-family: ${fontFamily};
+  font-size: ${fontSize};
+  padding: 5px 10px;
+  background-color: transparent;
+  color: ${gray2};
+  text-decoration: none;
+  cursor: pointer;
+  :focus {
+    outline-color: ${gray5};
+  }
+  span {
+    margin-left: 7px;
+  }
+`;
 type FormData = {
   search: string;
 };
@@ -15,6 +31,7 @@ export const Header = () => {
   const { register, handleSubmit } = useForm<FormData>();
   const [searchParams] = useSearchParams();
   const criteria = searchParams.get('criteria') || '';
+  const { isAuthenticated, user, loading } = useAuth();
 
   const submitForm = ({ search }: FormData) => {
     navigate(`search?criteria=${search}`);
@@ -81,35 +98,26 @@ export const Header = () => {
           `}
         />
       </form>
-      <Link
-        to="signin"
-        css={css`
-          font-family: ${fontFamily};
+      <div>
+        {!loading &&
+          (isAuthenticated ? (
+            <div>
+              <span>{user!.name}</span>
 
-          font-size: ${fontSize};
+              <Link to="/signout" css={buttonStyle}>
+                <UserIcon />
 
-          padding: 5px 10px;
+                <span>Sign Out</span>
+              </Link>
+            </div>
+          ) : (
+            <Link to="/signin" css={buttonStyle}>
+              <UserIcon />
 
-          background-color: transparent;
-
-          color: ${gray2};
-
-          text-decoration: none;
-
-          cursor: pointer;
-
-          :focus {
-            outline-color: ${gray5};
-          }
-          span {
-            margin-left: 7px;
-          }
-        `}
-      >
-        <UserIcon />
-
-        <span>Sign In</span>
-      </Link>
+              <span>Sign In</span>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 };
