@@ -37,7 +37,7 @@ export const AskPage = () => {
 
       content: data.content,
 
-      userName: 'Fred',
+      // userName: 'Fred',
 
       created: new Date(),
     });
